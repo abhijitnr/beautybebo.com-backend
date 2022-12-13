@@ -8,7 +8,7 @@ const userSignup = async (req, res) => {
   const userPresent = await User.findOne({ email });
 
   if (userPresent?.email) {
-    res.send("User already exist!");
+    res.status(409).send("User already exist!");
   }
   try {
     bcrypt.hash(password, 10, async (err, encryptedPassword) => {
@@ -20,10 +20,10 @@ const userSignup = async (req, res) => {
         password: encryptedPassword,
       });
       await user.save();
-      res.send("Signup successfully done.");
+      res.status(200).send("Signup successfully done.");
     });
   } catch (error) {
-    res.send(error);
+    res.status(500).send(error);
   }
 };
 
@@ -43,16 +43,18 @@ const userLogin = async (req, res) => {
             { userId: user[0]._id },
             process.env.JWT_TOKEN
           );
-          res.send({ massege: "Login successfully", token: token });
+          res
+            .status(200)
+            .send({ massege: "Login successfully done.", token: token });
         } else {
-          res.send("Unable to Login!");
+          res.status(401).send("Unable to Login!");
         }
       });
     } else {
-      res.send("User not found!");
+      res.status(404).send("User not found!");
     }
   } catch (error) {
-    res.send(error);
+    res.status(500).send(error);
   }
 };
 
