@@ -8,7 +8,9 @@ const userSignup = async (req, res) => {
   const userPresent = await User.findOne({ email });
 
   if (userPresent?.email) {
-    res.status(409).send("User already exist!");
+    res.status(409).send({
+      message: "User already exist!",
+    });
   }
   try {
     bcrypt.hash(password, 10, async (err, encryptedPassword) => {
@@ -20,10 +22,15 @@ const userSignup = async (req, res) => {
         password: encryptedPassword,
       });
       await user.save();
-      res.status(200).send("Signup successfully done.");
+      res.status(200).send({
+        message: "Signup Successfully Done.",
+      });
     });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send({
+      message: "Error found !",
+      error: error,
+    });
   }
 };
 
@@ -43,18 +50,26 @@ const userLogin = async (req, res) => {
             { userId: user[0]._id },
             process.env.JWT_TOKEN
           );
-          res
-            .status(200)
-            .send({ massege: "Login successfully done.", token: token });
+          res.status(200).send({
+            massege: "Login successfully Done.",
+            token: token,
+          });
         } else {
-          res.status(401).send("Unable to Login!");
+          res.status(401).send({
+            message: "Unable to Login!",
+          });
         }
       });
     } else {
-      res.status(404).send("User not found!");
+      res.status(404).send({
+        message: "User not found!",
+      });
     }
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send({
+      message: "Error found !",
+      error: error,
+    });
   }
 };
 
