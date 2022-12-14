@@ -1,75 +1,71 @@
 const User = require("../models/User");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const CryptoJS = require("crypto-js");
 
 /* USER SIGNUP */
 const userSignup = async (req, res) => {
   const { firstName, lastName, email, phone, password } = req.body;
-  const userPresent = await User.findOne({ email });
 
-  if (userPresent?.email) {
-    res.status(409).send({
-      message: "User already exist!",
-    });
-  }
   try {
-    bcrypt.hash(password, 10, async (err, encryptedPassword) => {
-      const user = new User({
-        firstName,
-        lastName,
-        email,
-        phone,
-        password: encryptedPassword,
-      });
-      await user.save();
-      res.status(200).send({
-        message: "Signup Successfully Done.",
-      });
+    const newUser = new User({
+      firstName,
+      lastName,
+      email,
+      phone,
+      password: CryptoJS.AES.encrypt(
+        password,
+        process.env.PASS_SECRET
+      ).toString(),
     });
-  } catch (error) {
-    res.status(500).send({
-      message: "Error found !",
-      error: error,
+
+    const savedUser = await newUser.save();
+    res.status(201).json({
+      message: "Signup successful",
+      signupUser: savedUser,
     });
+  } catch (err) {
+    res.status(500).json(err);
   }
 };
 
 /* USER LOGIN */
 const userLogin = async (req, res) => {
-  const { email, password } = req.body;
-
   try {
-    const user = await User.find({ email });
+    const user = await User.findOne({ email: req.body.email });
+    !user && res.status(401).json("Credentials doesn't exist !");
 
-    if (user.length > 0) {
-      const hashed_password = user[0].password;
+    const hashedPassword = CryptoJS.AES.decrypt(
+      user.password,
+      process.env.PASS_SECRET
+    );
 
-      bcrypt.compare(password, hashed_password, (err, result) => {
-        if (result) {
-          const token = jwt.sign(
-            { userId: user[0]._id },
-            process.env.JWT_TOKEN
-          );
-          res.status(200).send({
-            massege: "Login successfully Done.",
-            token: token,
-          });
-        } else {
-          res.status(401).send({
-            message: "Unable to Login!",
-          });
-        }
-      });
-    } else {
-      res.status(404).send({
-        message: "User not found!",
-      });
-    }
-  } catch (error) {
-    res.status(500).send({
-      message: "Error found !",
-      error: error,
+    const OriginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
+
+    OriginalPassword !== req.body.password &&
+      res.status(401).json("Password doesn't match !");
+
+    const accessToken = jwt.sign(
+      {
+        id: user._id,
+        isAdmin: user.isAdmin,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "3d",
+      }
+    );
+
+    const { password, ...others } = user._doc;
+
+    res.status(200).json({
+      message: "Login successful",
+      loginUser: {
+        ...others,
+        accessToken,
+      },
     });
+  } catch (err) {
+    res.status(500).json(err);
   }
 };
 
