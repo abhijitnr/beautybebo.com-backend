@@ -1,0 +1,3 @@
+1. SIGNUP ( POST ) = https://average-jersey-bat.cyclic.app/users/signup
+
+2. LOGIN ( POST ) = https://average-jersey-bat.cyclic.app/users/login
