@@ -1,5 +1,11 @@
 const express = require("express");
-const { userSignup, userLogin } = require("../controllers/userController");
+const {
+  userSignup,
+  userLogin,
+  getUserById,
+  getUsers,
+  deleteUser,
+} = require("../controllers/userController");
 
 const userRoutes = express.Router();
 
@@ -8,6 +14,15 @@ userRoutes.post("/signup", userSignup);
 
 /* LOGIN */
 userRoutes.post("/login", userLogin);
+
+/* GET ALL USER */
+userRoutes.get("/", getUsers);
+
+/* GET USER */
+userRoutes.get("/:id", getUserById);
+
+/* DELETE USER */
+userRoutes.delete("/:id", deleteUser);
 
 module.exports = userRoutes;
 
