@@ -6,6 +6,10 @@ const {
   getUsers,
   deleteUser,
 } = require("../controllers/userController");
+const {
+  verifyTokenAndAdmin,
+  verifyTokenAndAuthorization,
+} = require("../middlewares/verifyToken");
 
 const userRoutes = express.Router();
 
@@ -16,13 +20,13 @@ userRoutes.post("/signup", userSignup);
 userRoutes.post("/login", userLogin);
 
 /* GET ALL USER */
-userRoutes.get("/", getUsers);
+userRoutes.get("/", verifyTokenAndAdmin, getUsers);
 
 /* GET USER */
-userRoutes.get("/:id", getUserById);
+userRoutes.get("/:id", verifyTokenAndAdmin, getUserById);
 
 /* DELETE USER */
-userRoutes.delete("/:id", deleteUser);
+userRoutes.delete("/:id", verifyTokenAndAuthorization, deleteUser);
 
 module.exports = userRoutes;
 
