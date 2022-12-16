@@ -6,7 +6,6 @@ const productRoute = require("./routes/products");
 const cartRoutes = require("./routes/carts");
 const orderRoute = require("./routes/orders");
 const dotenv = require("dotenv");
-// const searchRoute = require("./routes/search");
 dotenv.config();
 
 const app = express();
@@ -39,8 +38,6 @@ app.use("/users", userRoutes);
 app.use("/products", productRoute);
 app.use("/carts", cartRoutes);
 app.use("/orders", orderRoute);
-// app.use("/search", searchRoute);
-
 /* LISTENING */
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
