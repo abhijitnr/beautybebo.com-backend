@@ -21,7 +21,9 @@ const getNavbarProducts = async (req, res) => {
   const query = req.query.q;
   const regex = new RegExp(query, "i");
   try {
-    const navbars = await Navbar.find({ title: regex });
+    const navbars = await Navbar.find({
+      $or: [{ title: regex }, { description: regex }],
+    });
     res.status(200).json(navbars);
   } catch (error) {
     res.status(500).json(error);
