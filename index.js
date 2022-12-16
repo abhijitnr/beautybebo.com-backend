@@ -39,7 +39,7 @@ app.use("/users", userRoutes);
 app.use("/products", productRoute);
 app.use("/carts", cartRoutes);
 app.use("/orders", orderRoute);
-app.use("/search", searchRoute);
+// app.use("/search", searchRoute);
 
 /* LISTENING */
 app.listen(PORT, () => {
