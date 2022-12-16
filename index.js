@@ -6,7 +6,7 @@ const productRoute = require("./routes/products");
 const cartRoutes = require("./routes/carts");
 const orderRoute = require("./routes/orders");
 const dotenv = require("dotenv");
-const searchRoute = require("./routes/search");
+// const searchRoute = require("./routes/search");
 dotenv.config();
 
 const app = express();
