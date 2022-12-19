@@ -17,16 +17,25 @@
 ## Files and Folder Structure
 
 - ### controllers
-  - ### [productController.js](./controllers/productController.js)
-  - ### [userController.js](./controllers/userController.js)
+  - [cartController.js](./controllers/cartController.js)
+  - [navController.js](./controllers/navController.js)
+  - [orderController.js](./controllers/orderController.js)
+  - [productController.js](./controllers/productController.js)
+  - [userController.js](./controllers/userController.js)
 - ### middlewares
-  - ### [verifyToken.js](./middlewares/verifyToken.js)
+  - [verifyToken.js](./middlewares/verifyToken.js)
 - ### models
-  - ### [Product.js](./models/Product.js)
-  - ### [User.js](./models/User.js)
+  - [Cart.js](./models/Cart.js)
+  - [Navbar.js](./models/Navbar.js)
+  - [Order.js](./models/Order.js)
+  - [Product.js](./models/Product.js)
+  - [User.js](./models/User.js)
 - ### routes
-  - ### [products.js](./routes/products.js)
-  - ### [users.js](./routes/users.js)
+  - [carts.js](./routes/carts.js)
+  - [navbar.js](./routes/navbar.js)
+  - [orders.js](./routes/orders.js)
+  - [products.js](./routes/products.js)
+  - [users.js](./routes/users.js)
 - ### .env
 - ### .gitignore
 - ### [index.js](./index.js)
