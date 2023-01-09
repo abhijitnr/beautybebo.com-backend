@@ -41,3 +41,10 @@
 - ### [index.js](./index.js)
 - ### [package-lock.json](./package-lock.json)
 - ### [package.json](./package.json)
+
+## key need to add in .env file
+
+- PORT
+- MONGODB_URL
+- JWT_SECRET
+- PASS_SECRET
